@@ -20,8 +20,6 @@ Async_Server myServer(80, "/ws");
 WsDataUpdater wsUpdater(&myServer);
 WiFiClient myWifiClient;
 
-PerfectLightsCDController PLCD;
-
 
 bool buttonState = false;
 bool LCD_DISABLE_WRITE = false;
@@ -29,82 +27,89 @@ uint8_t menuIndex = 0;
 
 
 void setup() {
+    /* set pwm frequency */
     analogWriteFreq(26000);
+
     Serial.begin(115200);
     delay(1000);
     Serial.println("\n\n");
     Serial.println("We are on!!!");
     Serial.printf("\nResetReason: %u\nResetExccause: %u\n", system_get_rst_info()->reason,
                   system_get_rst_info()->exccause);
+
+    /* initialize Wi-Fi manager */
     WiFi_Manager::init();
 
+    /* start DNS server */
     dnsServer.start(53, "*", WiFi.softAPIP());
     myServer.attachWsUpdater(&wsUpdater);
 
     Serial.print(AP_SSID);
     Serial.print(" : ");
     Serial.println(WiFi.softAPIP());
+
+    /* initialize LCD */
     ShiftRegisterLCD::setMutex(LCD_DISABLE_WRITE);
     ShiftRegisterLCD::init();
+
+    /* initialize server */
     myServer.init();
+
+    /* initialize LED Controller */
     LedController::init();
+
+    /* initialize Analog Reader */
     AnalogReader::init();
-    PLCD.init(myWifiClient);
+
+    /* initialize Perfect Lights Custom Smart Home Controller  */
+    PerfectLightsCDController::init(myWifiClient);
+
     Serial.println("Initialization Completed!!!");
-
-
-//    ShiftRegisterLCD::clearDisplay();
-//    ShiftRegisterLCD::goTo(0, 0);
-//
-//    ShiftRegisterLCD::write("Access Point IP");
-//    ShiftRegisterLCD::goTo(1, 0);
-//    ShiftRegisterLCD::write(WiFi.softAPIP().toString());
-//
-//    delay(5000);
-//
-//    ShiftRegisterLCD::clearDisplay();
-//    ShiftRegisterLCD::goTo(0, 0);
-//
-//    ShiftRegisterLCD::write(WiFi.SSID().substring(0, 15));
-//    ShiftRegisterLCD::goTo(1, 0);
-//    ShiftRegisterLCD::write(WiFi.localIP().toString());
-//    delay(5000);
-//
-//    ShiftRegisterLCD::clearDisplay();
-//    ShiftRegisterLCD::drawTemplate();
-
 }
 
-unsigned long _t = millis();
-unsigned long _t2 = millis();
+unsigned long t = millis();
+unsigned long t2 = millis();
 unsigned long menuLastPageChangeTime = millis();
 
 void loop() {
+    /* Process DNS requests */
     dnsServer.processNextRequest();
-    myServer.loop();
-    wsUpdater.loop();
-//    if (WiFi.isConnected()) {
-////        Serial.print("IP address:\t");
-////        Serial.println(WiFi.localIP());
-//    }
 
-    if (millis() - _t > 10) {
+    /* Cleanup old clients & reboot if needed */
+    myServer.loop();
+
+    /* Send the latest values to the ws clients periodically */
+    wsUpdater.loop();
+
+    if (millis() - t > 10) {
         /*100Hz loop*/
+
+        /* Read POTs, NTC and the button sensors */
         AnalogReader::loop();
 
+        /* Write the latest values to the LEDs */
         LedController::loop();
-        ShiftRegisterLCD::loop();
-        PerfectLightsCDController::loop();
-        _t = millis();
 
-//        Serial.printf("FH: %u\n", system_get_free_heap_size());
+        /* Refresh display periodically */
+        ShiftRegisterLCD::loop();
+
+        /* Process Perfect Light Custom Smart Home requests */
+        PerfectLightsCDController::loop();
+        t = millis();
     }
 
-    if (millis() - _t2 > 200) {
+    if (millis() - t2 > 200) {
         /*5Hz loop*/
+
+        /* check if the button pressed */
         if (AnalogReader::getButton()) {
+
+            /* check if the button state changed */
             if (!buttonState) {
+                /* change the menu page */
                 buttonState = true;
+
+                /* unlock the display */
                 LCD_DISABLE_WRITE = false;
                 menuIndex++;
 
@@ -159,11 +164,13 @@ void loop() {
                 menuLastPageChangeTime = millis();
 
                 if (menuIndex == 0) {
-                    // allow writing to the lcd screen only on the first page
+                    /* allow writing to the lcd screen only on the first page */
                     LCD_DISABLE_WRITE = false;
                 } else LCD_DISABLE_WRITE = true;
             }
         } else {
+            /* open the first page of the menu if a page other than the first page of the menu
+             * remains open for more than 5 seconds */
             if (menuIndex > 0 && (millis() - menuLastPageChangeTime > 5000)) {
                 /*page 1: info screen */
                 LCD_DISABLE_WRITE = false;
@@ -175,7 +182,7 @@ void loop() {
             }
             buttonState = false;
         }
-        _t2 = millis();
+        t2 = millis();
     }
 
 
