@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Perfect Lights</title>
+
+    <link href="/fonts/woff2/montserrat.css" rel="stylesheet"/>
+    <link href="/fonts/woff2/robotomono.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="modal">
+    <div class="modal-content">
+        <span class="close-button">x</span>
+        <h1>SSID:</h1>
+        <h2 id="modal-ssid"></h2>
+        <h1>IP:</h1>
+        <h2 id="modal-ip"></h2>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="topBar">
+        <div class="settings topBarItem">
+            <div id="settingsButton">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="hsl(228, 19%, 42%)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-settings"
+                >
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+                    ></path>
+                </svg>
+            </div>
+            <div id="backButton">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="hsl(228, 19%, 42%)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-chevron-left"
+                >
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </div>
+            <div id="closeButton">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="hsl(228, 19%, 42%)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-x"
+                >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+        </div>
+        <div class="wifi topBarItem" id="wifiInfo">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="hsla(228, 19%, 42%, 0.3)"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-wifi"
+            >
+                <path d="M1.42 9a16 16 0 0 1 21.16 0" stroke="var(--wifi4)"></path>
+                <path d="M5 12.55a11 11 0 0 1 14.08 0" stroke="var(--wifi3)"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0" stroke="var(--wifi2)"></path>
+                <line
+                        x1="12"
+                        y1="20"
+                        x2="12.01"
+                        y2="20"
+                        stroke="var(--wifi1)"
+                ></line>
+            </svg>
+        </div>
+        <div class="information topBarItem">
+            <span id="celsius"><span id="celsiusVal"></span>°</span>&nbsp;
+            <span id="kelvin"><span id="kelvinVal">6000</span>K</span>&nbsp;
+            <span id="brightness"
+            ><span id="brightnessVal">&nbsp;100</span>%</span
+            >
+        </div>
+    </div>
+    <section class="container" id="loadingPage">
+        <div>
+            <div id="loadingTitle"></div>
+            <div class="triangle">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        style="transform: translateY(-7.1px)"
+                        width="96.22"
+                        height="87.949"
+                        viewBox="0 0 96.22 87.949"
+                >
+                    <path
+                            id="Polygon_1_-_Outline"
+                            data-name="Polygon 1 - Outline"
+                            d="M60.5,24.051a9.9,9.9,0,0,0-8.665,5.008L20.751,83.008A10,10,0,0,0,29.415,98H91.585a10,10,0,0,0,8.665-14.992L69.165,29.059A9.9,9.9,0,0,0,60.5,24.051m0-7a16.84,16.84,0,0,1,14.73,8.513l31.085,53.949A17,17,0,0,1,91.585,105H29.415a17,17,0,0,1-14.73-25.487L45.77,25.564A16.84,16.84,0,0,1,60.5,17.051Z"
+                            transform="translate(-12.39 -17.051)"
+                            fill="#fff"
+                    />
+                </svg>
+            </div>
+        </div>
+    </section>
+    <section class="container" id="settingsPage">
+        <div class="settingsCard" id="WiFiSettings">
+            <div class="icon">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-wifi"
+                >
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                    <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                </svg>
+            </div>
+            <div class="text">WiFi</div>
+        </div>
+
+        <!-- <div class="settingsCard">
+          <div class="icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-radio"
+            >
+              <circle cx="12" cy="12" r="2"></circle>
+              <path
+                d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"
+              ></path>
+            </svg>
+          </div>
+          <div class="text">Access Point</div>
+        </div> -->
+
+        <div class="settingsCard" id="updateButton">
+            <div class="icon">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-upload"
+                >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            </div>
+            <div class="text">Update</div>
+        </div>
+
+        <div class="settingsCard red" id="signOut">
+            <div class="icon">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-log-out"
+                >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            </div>
+            <div class="text">Sign out</div>
+        </div>
+    </section>
+    <section class="container" id="WiFiPage"></section>
+    <section class="container" id="controlPage">
+        <div class="col">
+            <div class="row">
+                <div class="lightPercentBar coldLight"></div>
+                <div class="triangleWrap" id="triangleSliderWrap">
+                    <div class="triangle" id="triangleSlider">
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                style="transform: translateY(-7.1px)"
+                                width="96.22"
+                                height="87.949"
+                                viewBox="0 0 96.22 87.949"
+                        >
+                            <path
+                                    id="Polygon_1_-_Outline"
+                                    data-name="Polygon 1 - Outline"
+                                    d="M60.5,24.051a9.9,9.9,0,0,0-8.665,5.008L20.751,83.008A10,10,0,0,0,29.415,98H91.585a10,10,0,0,0,8.665-14.992L69.165,29.059A9.9,9.9,0,0,0,60.5,24.051m0-7a16.84,16.84,0,0,1,14.73,8.513l31.085,53.949A17,17,0,0,1,91.585,105H29.415a17,17,0,0,1-14.73-25.487L45.77,25.564A16.84,16.84,0,0,1,60.5,17.051Z"
+                                    transform="translate(-12.39 -17.051)"
+                                    fill="#fff"
+                            />
+                            <path
+                                    id="Line_15"
+                                    data-name="Line 15"
+                                    d="M0,13.759c-1.1,0-2-.641-2-1.433V-.567C-2-1.359-1.1-2,0-2S2-1.359,2-.567V12.327C2,13.118,1.1,13.759,0,13.759Z"
+                                    transform="translate(48.61 4.449)"
+                                    fill="#fff"
+                            />
+                        </svg>
+                    </div>
+                </div>
+                <div class="lightPercentBar warmLight"></div>
+            </div>
+            <div>
+                <input type="range" min="0" max="255" value="0" class="slider"/>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+<script src="script.js"></script>
+<script>
+    const modal = document.querySelector(".modal");
+    const modalTrigger = document.getElementById("wifiInfo");
+    const modalCloseButton = document.querySelector(".close-button");
+    const modalSSID = document.getElementById("modal-ssid");
+    const modalIP = document.getElementById("modal-ip");
+    const updateModal = () => {
+        if (wifiToggleDisabled) return;
+        modalSSID.innerText = lastIncomingWiFi["CONNECTED"]["SSID"];
+        modalIP.innerText = lastIncomingWiFi["CONNECTED"]["IP"];
+        modal.style.display = "block";
+        toggleModal();
+    };
+    const toggleModal = () => {
+        modal.classList.toggle("show-modal");
+    };
+    const windowOnClick = (event) => {
+        if (event.target === modal) {
+            toggleModal();
+        }
+    };
+    modalTrigger.addEventListener("click", updateModal);
+    modalCloseButton.addEventListener("click", toggleModal);
+    window.addEventListener("click", windowOnClick);
+</script>
+</html>

@@ -1,0 +1,472 @@
+:root {
+    --warmPercent: 204px;
+    --coldPercent: 204px;
+    --animation: transform 1s ease-in-out, height 1s ease-in-out;
+    --wifi1: hsla(228, 19%, 42%, 0.3);
+    --wifi2: hsla(228, 19%, 42%, 0.3);
+    --wifi3: hsla(228, 19%, 42%, 0.3);
+    --wifi4: hsla(228, 19%, 42%, 0.3);
+}
+
+html {
+    overflow-y: hidden;
+}
+
+body {
+    background: #0c1223;
+    font-family: "Montserrat", sans-serif;
+    overflow-y: hidden;
+    position: fixed;
+    width: -webkit-fill-available;
+    overscroll-behavior: none;
+}
+
+#settingsButton {
+    display: block;
+}
+
+#closeButton {
+    display: none;
+}
+
+#backButton {
+    display: none;
+}
+
+.lightPercentBar {
+    width: 10px;
+    height: 204px;
+    position: relative;
+}
+
+.lightPercentBar::after {
+    content: "";
+    width: 10px;
+    position: absolute;
+    bottom: 0;
+}
+
+.coldLight {
+    background: hsla(229, 28%, 40%, 0.2);
+}
+
+.coldLight::after {
+    background: hsla(229, 28%, 40%, 1);
+    height: var(--coldPercent);
+    transition: var(--animation);
+}
+
+.warmLight {
+    background: hsl(67, 16%, 49%, 0.2);
+}
+
+.warmLight::after {
+    background: hsl(67, 16%, 49%, 1);
+    height: var(--warmPercent);
+    transition: var(--animation);
+}
+
+.container {
+    /* margin-top: 4rem; */
+    height: 90vh;
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#WiFiPage {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: auto;
+}
+
+.col {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+}
+
+.row {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: -moz-available; /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    width: fill-available;
+}
+
+.triangleWrap {
+    width: -moz-fit-content;
+    height: -moz-fit-content;
+    width: fit-content;
+    height: fit-content;
+    padding: 24.2px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.1s ease-in-out;
+}
+
+.triangleWrap:hover {
+    opacity: 1;
+}
+
+.triangle {
+    width: -moz-fit-content;
+    height: -moz-fit-content;
+    width: fit-content;
+    height: fit-content;
+    transition: var(--animation);
+}
+
+#loadingPage .triangle {
+    animation: loadingAnimation 3s ease-in-out 0s infinite normal none;
+}
+
+.topBar {
+    display: flex;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    font-family: "Roboto Mono", monospace;
+}
+
+.topBar .information {
+    color: #9f9c91;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.topBar .information #kelvin {
+    color: #4b5680;
+}
+
+#celsius {
+    color: #cf755e;
+}
+
+.topBarItem {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.topBarItem.settings svg {
+    opacity: 0.5;
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.topBarItem.settings svg:hover {
+    opacity: 1;
+}
+
+.topBarItem:first-child {
+    justify-content: flex-start;
+}
+
+.topBarItem:last-child {
+    justify-content: flex-end;
+}
+
+.wifi {
+    margin-bottom: 0.5rem;
+}
+
+.slider {
+    margin-top: 3rem;
+    height: 10px;
+    border-radius: 0;
+    opacity: 0.7;
+    transition: 0.1s opacity ease-in-out;
+    overflow: hidden;
+    width: 200px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #c2c2c233;
+}
+
+.slider::-webkit-slider-runnable-track {
+    height: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: #c2c2c233;
+    margin-top: -1px;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    width: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 10px;
+    cursor: pointer;
+    background: #c2c2c2;
+    box-shadow: -200px 0 0 200px #c2c2c2;
+}
+
+.slider::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    background: #c2c2c2;
+    box-shadow: -200px 0 0 200px #c2c2c2;
+    border: none;
+    border-radius: 0;
+}
+
+.slider::-moz-range-progress {
+    background-color: #c2c2c2;
+}
+
+.slider::-moz-range-track {
+    height: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: #c2c2c233;
+    margin-top: -1px;
+}
+
+#settingsPage {
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px;
+}
+
+.settingsCard {
+    margin: 5px;
+    color: #d8e0fe;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 2px #ffffff0d solid;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+}
+
+.settingsCard:hover {
+    border: 2px #98FFC80D solid;
+    color: #98FFC8FF;
+}
+
+.settingsCard.red:hover {
+    border: 2px #FF5D5D0D solid;
+    color: #FF5D5D;
+}
+
+.settingsCard .icon {
+    width: 7rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.settingsCard .text {
+    /* border-top: 2px #ffffff0d solid; */
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.wifiCard {
+    margin: 5px;
+    color: #d8e0fe;
+    font-weight: 500;
+    padding: 20px;
+    border-radius: 10px;
+    width: 325px;
+    border: 2px #ffffff1a solid;
+    cursor: pointer;
+}
+
+.wifiCard .wifiPass {
+    width: -webkit-fill-available;
+    font-weight: 400;
+    font-size: 1rem;
+    background: none;
+    outline: none;
+    padding: 5.8px 10px;
+    border-radius: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px #ffffff1a solid;
+    color: currentColor;
+}
+
+.wifiCard .pass {
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
+.wifiCard .pass input[type="button"] {
+    background: none;
+    color: rgb(216 224 254 / 30%);
+    border: 1px #ffffff1a solid;
+    border-radius: 4px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    cursor: pointer;
+}
+
+.wifiCard .pass input:hover[type="button"] {
+    color: rgb(216 224 254);
+}
+
+.wifiPass::-ms-reveal {
+    filter: invert(90%) sepia(77%) saturate(1379%) hue-rotate(178deg) brightness(102%) contrast(99%);
+}
+
+.wifiCard .info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+}
+
+.wifiCard .info .icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#loadingPage {
+    z-index: 1100;
+    color: white;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background: #0c1223;
+    height: -webkit-fill-available;
+    max-width: unset !important;
+}
+
+#loadingPage div > div {
+    padding: 2rem;
+    width: fit-content;
+    margin: auto;
+}
+
+#loadingTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.modal {
+    display: none;
+    z-index: 1000;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.modal-content h1 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.modal-content h2 {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: #0c1223;
+    padding: 1rem 1.5rem;
+    width: 70%;
+    max-width: 24rem;
+    border-radius: 0.5rem;
+}
+
+.close-button {
+    float: right;
+    width: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    background-color: lightgray;
+}
+
+.close-button:hover {
+    background-color: darkgray;
+}
+
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+@media screen and (max-width: 600px) {
+    .topBarItem:last-child {
+        justify-content: center;
+        order: 2;
+    }
+
+    .topBarItem.wifi {
+        margin-bottom: 0;
+        order: 3;
+        justify-content: flex-end;
+    }
+
+    .topBarItem.wifi svg {
+        height: 24px;
+    }
+}
+
+@keyframes loadingAnimation {
+    0.0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+    29.5% {
+        transform: rotate(-60deg);
+    }
+    50.3% {
+        transform: rotate(60deg);
+    }
+    70.0% {
+        transform: rotate(-100deg);
+    }
+    89.8% {
+        transform: rotate(-420deg);
+    }
+}
